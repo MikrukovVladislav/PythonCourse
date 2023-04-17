@@ -15,8 +15,9 @@ def func1(var):
 
 
 def func2(var):
-    tmp_result = (bin, str(oct(var)), str(hex(var)).upper())
-    result = tuple(map(lambda  fn: fn()[2:], tmp_result))
+    tmp = (bin, oct, hex)
+
+    result = tuple(map(lambda fn: fn(var)[2:], tmp))
 
     return result
 
