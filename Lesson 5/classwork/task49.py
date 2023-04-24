@@ -16,10 +16,12 @@ class Person:
 
     @age.setter
     def age(self, age):
-        if self.__age is None:
-            self.__age = age
-        else:
+        print(self.__dict__)
+        if "_Person__age" in self.__dict__:
             print("Beep")
+
+        else:
+            self.__age = age
 
 
 a = Person("Иванов", 15)
