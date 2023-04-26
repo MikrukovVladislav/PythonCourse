@@ -1,7 +1,7 @@
 # # Написать авторизацию пользователя в систему.
 # При реализации авторизации спроектировать абстрактный класс и реализовать методы в наследуемом классе
 # login, check_password, check_login
-
+import abc
 # При запуске программы пользователю необходимо ввести
 # логин и пароль, поэтапно.
 # login: _________
@@ -15,32 +15,46 @@
 
 from abc import ABC
 
+
 class LoginNotFound(ValueError):
     pass
+
+
 class IncorrectPassword(ValueError):
     pass
+
+
 class LengthError(ValueError):
     pass
+
+
 class Abstract(ABC):
+    @abc.abstractmethod
     def login(self):
         pass
+
+    @abc.abstractmethod
     def check_password(self, pwd):
         pass
+
+    @abc.abstractmethod
     def check_login(self, log):
         pass
 
+
 class LoginClass(Abstract):
-    correct_login="test"
-    correct_password="123"
+    correct_login = "test"
+    correct_password = "123"
+
     def check_password(self, pwd):
-        if(len(pwd) > 8):
+        if (len(pwd) > 8):
             raise LengthError
         else:
-            if(pwd != self.correct_password):
+            if (pwd != self.correct_password):
                 raise IncorrectPassword
 
     def check_login(self, log):
-        if(log != self.correct_login):
+        if (log != self.correct_login):
             raise LoginNotFound
 
     def login(self):
@@ -48,6 +62,7 @@ class LoginClass(Abstract):
         self.check_password(str(input("Введите пароль: ")))
         print("Login success")
 
-a=LoginClass()
+
+a = LoginClass()
 
 a.login()
