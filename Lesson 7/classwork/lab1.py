@@ -29,6 +29,7 @@ from getpass import getpass
 from mysql.connector import connect, Error
 
 #Link: https://editor.ponyorm.com/user/kamakado/lesson7_classwork/mysql
+#123
 sql = ["SELECT * FROM task WHERE id_category=(SELECT id FROM category WHERE name=\"testCategory1\")",
        "SELECT * FROM task WHERE id_difficult=(SELECT id FROM difficult WHERE name=\"easy\")",
        "SELECT * FROM task WHERE id IN (SELECT tasks FROM task_student WHERE students=(SELECT id FROM student WHERE name=\"Fu Jiehong\") AND status IN (SELECT id FROM status WHERE name IN (\"run\", \"finish\")))",
