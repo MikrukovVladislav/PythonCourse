@@ -16,7 +16,7 @@
 # 3. Выдавать список решенных и не решенных задач для слушателя
 # 4. Выдавать весь список задач выданный слушателю
 # 5. Выдавать список группы по преподавателю
-# 6. Предусмотреть возможность изменения статуса задачи для конкретного слушателя
+# 6. Предусмотреть возможность изменения статуса задачи для конкретного слушателя ?????
 # 7. Выдавать процент решенных задач. (Соотношение между общим кол-вом и решенным)
 # 8. Выдавать процент успеваемости по всей группе.
 #
@@ -27,6 +27,7 @@
 
 from getpass import getpass
 from mysql.connector import connect, Error
+import os
 
 #Link: https://editor.ponyorm.com/user/kamakado/lesson7_classwork/mysql
 #123
@@ -35,10 +36,11 @@ sql = ["SELECT * FROM task WHERE id_category=(SELECT id FROM category WHERE name
        "SELECT * FROM task WHERE id IN (SELECT tasks FROM task_student WHERE students=(SELECT id FROM student WHERE name=\"Fu Jiehong\") AND status IN (SELECT id FROM status WHERE name IN (\"run\", \"finish\")))",
        "SELECT * FROM task WHERE id IN (SELECT tasks FROM task_student WHERE students=(SELECT id FROM student WHERE name=\"Fu Jiehong\"))",
        "SELECT name from student WHERE id IN (SELECT students FROM teacher_students WHERE teachers=(SELECT id FROM teacher WHERE name=\"Kelly Murphy\"))",
-       "",
+       #"",
        "SELECT status, count(*) * 100.0 / (select count(*) FROM task_student) FROM task_student WHERE task_student.status=3",
        "SELECT status, count(*) * 100.0 / (select count(*) FROM task_student WHERE students IN (SELECT students FROM teacher_students WHERE teachers=2)) FROM task_student WHERE task_student.status=3 AND students IN (SELECT students FROM teacher_students WHERE teachers=2);"]
 
+sql_get_tasks_code = "SELECT id, code FROM task"
 try:
     with connect(
         host="mikrukov.vladislav.fvds.ru",
@@ -56,12 +58,22 @@ try:
             print("******" + tmpStr + "******")
             print("***** " + prnt_msg + " *****")
             with connection.cursor() as cursor:
-                print("bepp")
                 cursor.execute(sql_request)
                 result = cursor.fetchall()
                 print("result = " + str(result))
                 for row in result:
                     print(row)
+
+        with connection.cursor() as cursor:
+            cursor.execute(sql_get_tasks_code)
+            result = cursor.fetchall()
+            print("result = " + str(result))
+            for row in result:
+                if not os.path.isdir("classwork"):
+                    os.mkdir("classwork")
+                with open("classwork\\task" + str(row[0]) + ".py", "w") as file:
+                    file.write(str(row[1]))
+                print(row[0])
 
             print("******" + tmpStr + "******")
 except Error as e:
